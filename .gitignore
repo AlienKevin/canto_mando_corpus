@@ -1,0 +1,7 @@
+/target
+processed/
+data/
+sentences.txt
+*.tar.xz
+__pycache__
+.DS_Store
