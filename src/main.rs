@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use rand::{thread_rng, Rng, SeedableRng};
 use regex::Regex;
 use std::collections::HashSet;
 use std::fs::File;
@@ -33,7 +34,8 @@ lazy_static! {
 }
 
 fn main() {
-    filter_processed().unwrap();
+    // filter_processed().unwrap();
+    reservoir_sample_lines(50).unwrap();
 }
 
 fn filter_processed() -> std::io::Result<()> {
@@ -77,6 +79,35 @@ fn split_line_at_last_tab(line: &str) -> (&str, &str) {
     (first_part, second_part)
 }
 
-pub fn is_punc(c: char) -> bool {
+fn is_punc(c: char) -> bool {
     PUNCS.contains(&c)
+}
+
+fn reservoir_sample_lines(num_lines: usize) -> std::io::Result<()> {
+    let mut reservoir: Vec<String> = Vec::with_capacity(num_lines);
+    let mut rng = rand::rngs::StdRng::seed_from_u64(42);
+    let mut i = 0;
+
+    let file = File::open("sentences.txt")?;
+    let reader = BufReader::new(file);
+    for line in reader.lines() {
+        if let Ok(line) = line {
+            if i < num_lines {
+                reservoir.push(line);
+            } else {
+                let j = rng.gen_range(0..=i);
+                if j < num_lines {
+                    reservoir[j] = line;
+                }
+            }
+            i += 1;
+        }
+    }
+
+    let output_file = File::create("sample_sentences.txt")?;
+    let mut writer = BufWriter::new(output_file);
+    for line in reservoir {
+        writer.write_all((line + "\n").as_bytes())?;
+    }
+    writer.flush()
 }
