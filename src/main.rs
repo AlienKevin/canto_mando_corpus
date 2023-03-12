@@ -87,8 +87,22 @@ fn plot_sentence_lengths(lengths: DashMap<u32, u32>) -> Result<(), Box<dyn std::
     Ok(())
 }
 
+fn get_bad_words() -> std::io::Result<HashSet<String>> {
+    let file = File::open("bad_words.txt")?;
+    let reader = BufReader::new(file);
+
+    let mut bad_words = HashSet::new();
+    for word in reader.lines() {
+        bad_words.insert(word?);
+    }
+
+    Ok(bad_words)
+}
+
 fn filter_processed() -> std::io::Result<()> {
     let start_time = Instant::now();
+
+    let bad_words = get_bad_words()?;
 
     let dir_entries = std::fs::read_dir("processed")?;
     let output_file = Arc::new(Mutex::new(File::create("sentences.txt")?));
@@ -96,6 +110,7 @@ fn filter_processed() -> std::io::Result<()> {
     let num_mixed = AtomicUsize::new(0);
     let num_cantonese = AtomicUsize::new(0);
     let num_neutral = AtomicUsize::new(0);
+    let num_bad = AtomicUsize::new(0);
     let num_lines = AtomicUsize::new(0);
     let sentence_lengths: DashMap<u32, u32> = DashMap::new();
     dir_entries
@@ -110,6 +125,10 @@ fn filter_processed() -> std::io::Result<()> {
                 num_lines.fetch_add(1, Ordering::Relaxed);
                 let line = line.unwrap();
                 let (sentence, language) = split_line_at_last_tab(&line);
+                if bad_words.iter().any(|word| sentence.contains(word)) {
+                    num_bad.fetch_add(1, Ordering::Relaxed);
+                    continue;
+                }
                 match language {
                     "mandarin" => {
                         num_mandarin.fetch_add(1, Ordering::Relaxed);
@@ -144,27 +163,34 @@ fn filter_processed() -> std::io::Result<()> {
             output_file.flush().unwrap();
         });
     let num_lines = num_lines.load(Ordering::Relaxed);
+    let num_bad = num_bad.load(Ordering::Relaxed);
     let num_cantonese = num_cantonese.load(Ordering::Relaxed);
     let num_mixed = num_mixed.load(Ordering::Relaxed);
     let num_neutral = num_neutral.load(Ordering::Relaxed);
     let num_mandarin = num_mandarin.load(Ordering::Relaxed);
+    println!("| Total | {} |", num_lines);
     println!(
-        "{} ({:.0}%) cantonese sentences",
+        "| Bad | {} | {:.0}% |",
+        num_bad,
+        num_bad as f32 / num_lines as f32 * 100.0
+    );
+    println!(
+        "| Cantonese | {} | {:.0}% |",
         num_cantonese,
         num_cantonese as f32 / num_lines as f32 * 100.0
     );
     println!(
-        "{} ({:.0}%) mixed sentences",
+        "| Cantonese mixed with Mandarin | {} | {:.0}% |",
         num_mixed,
         num_mixed as f32 / num_lines as f32 * 100.0
     );
     println!(
-        "{} ({:.0}%) neutral sentences",
+        "| Neutral | {} | {:.0}% |",
         num_neutral,
         num_neutral as f32 / num_lines as f32 * 100.0
     );
     println!(
-        "{} ({:.0}%) mandarin sentences",
+        "| Mandarin | {} | {:.0}% |",
         num_mandarin,
         num_mandarin as f32 / num_lines as f32 * 100.0
     );
