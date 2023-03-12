@@ -7,3 +7,6 @@ edition = "2021"
 regex = "1"
 lazy_static = "1.4.0"
 rand = "0.8.5"
+plotters = "0.3.4"
+rayon = "1.7.0"
+dashmap = { version = "5.4.0", features = ["rayon"] }
