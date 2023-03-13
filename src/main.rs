@@ -42,8 +42,9 @@ lazy_static! {
 }
 
 fn main() {
-    filter_processed().unwrap();
+    // filter_processed().unwrap();
     // reservoir_sample_lines(50).unwrap();
+    deduplicate_file("sentences_typo_fixed.txt").unwrap();
 }
 
 fn plot_sentence_lengths(lengths: DashMap<u32, u32>) -> Result<(), Box<dyn std::error::Error>> {
@@ -97,6 +98,22 @@ fn get_bad_words() -> std::io::Result<HashSet<String>> {
     }
 
     Ok(bad_words)
+}
+
+fn deduplicate_file(file_path: &str) -> std::io::Result<()> {
+    let file = File::open(file_path)?;
+    let reader = BufReader::new(file);
+    let mut unique_lines = HashSet::new();
+
+    for line_result in reader.lines() {
+        let line = line_result?;
+        if !unique_lines.contains(&line) {
+            println!("{}", line);
+            unique_lines.insert(line);
+        }
+    }
+
+    Ok(())
 }
 
 fn filter_processed() -> std::io::Result<()> {

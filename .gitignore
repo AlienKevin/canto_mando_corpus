@@ -2,6 +2,9 @@
 processed/
 data/
 sentences.txt
+sentences_uniq.txt
+sentences_typo_fixed.txt
+sentences_typo_fixed_uniq.txt
 *.tar.xz
 __pycache__
 .DS_Store
