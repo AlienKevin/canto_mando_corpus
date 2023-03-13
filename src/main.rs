@@ -44,7 +44,15 @@ lazy_static! {
 fn main() {
     // filter_processed().unwrap();
     // reservoir_sample_lines(50).unwrap();
-    deduplicate_file("sentences_typo_fixed.txt").unwrap();
+    // deduplicate_file("sentences_typo_fixed.txt").unwrap();
+    count_marked_canto_word_frequency();
+}
+
+fn count_marked_canto_word_frequency() -> std::io::Result<()> {
+    let file = File::open("marked_yue_words.txt")?;
+    let reader = BufReader::new(file);
+    
+    Ok(())
 }
 
 fn plot_sentence_lengths(lengths: DashMap<u32, u32>) -> Result<(), Box<dyn std::error::Error>> {

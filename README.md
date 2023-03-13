@@ -12,3 +12,8 @@ For the rest of the sentences, 40% are markedly Cantonese, while 47% are neutral
 | Mandarin | 6913635 | 6% |
 
 ![sentence lengths](sentence_lengths.png)
+
+# Sources
+|File| Source|
+| - | - |
+| zh_tw_words.txt | https://github.com/APCLab/jieba-tw|
