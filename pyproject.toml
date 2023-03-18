@@ -9,6 +9,7 @@ packages = [{include = "lihkg_processor"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 pycantonese = "^3.4.0"
+cantoseg = "^0.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

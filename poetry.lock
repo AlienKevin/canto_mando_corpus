@@ -43,6 +43,21 @@ files = [
 ]
 
 [[package]]
+name = "cantoseg"
+version = "0.0.1"
+description = "Cantonese segmentation tool 粵語分詞工具"
+category = "main"
+optional = false
+python-versions = ">=3.5, <4"
+files = [
+    {file = "cantoseg-0.0.1-py3-none-any.whl", hash = "sha256:b5229263ca114ba087b980baa9e7edda1e3f5ffb426dd2dbec910e5f008a2539"},
+    {file = "cantoseg-0.0.1.tar.gz", hash = "sha256:82269ecf698dd0010f2b3d759d8e8d0ed1192c9248498830a4ccfc133695a671"},
+]
+
+[package.dependencies]
+jieba = "*"
+
+[[package]]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -404,6 +419,17 @@ parso = ">=0.8.0,<0.9.0"
 docs = ["Jinja2 (==2.11.3)", "MarkupSafe (==1.1.1)", "Pygments (==2.8.1)", "alabaster (==0.7.12)", "babel (==2.9.1)", "chardet (==4.0.0)", "commonmark (==0.8.1)", "docutils (==0.17.1)", "future (==0.18.2)", "idna (==2.10)", "imagesize (==1.2.0)", "mock (==1.0.1)", "packaging (==20.9)", "pyparsing (==2.4.7)", "pytz (==2021.1)", "readthedocs-sphinx-ext (==2.1.4)", "recommonmark (==0.5.0)", "requests (==2.25.1)", "six (==1.15.0)", "snowballstemmer (==2.1.0)", "sphinx (==1.8.5)", "sphinx-rtd-theme (==0.4.3)", "sphinxcontrib-serializinghtml (==1.1.4)", "sphinxcontrib-websupport (==1.2.4)", "urllib3 (==1.26.4)"]
 qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["Django (<3.1)", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
+
+[[package]]
+name = "jieba"
+version = "0.42.1"
+description = "Chinese Words Segmentation Utilities"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "jieba-0.42.1.tar.gz", hash = "sha256:055ca12f62674fafed09427f176506079bc135638a14e23e25be909131928db2"},
+]
 
 [[package]]
 name = "jupyter-client"
@@ -958,4 +984,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "453dfcfda6defd0662de6bd74a4080f76310f9e74eeb3496bca8b772840ee234"
+content-hash = "8cee64adcfe7c9f25a7515e45afe14eed18fb3755a628b0045d38377b1dc1852"
