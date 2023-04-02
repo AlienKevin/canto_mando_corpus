@@ -1,10 +1,9 @@
 /target
 processed/
 data/
-sentences.txt
-sentences_uniq.txt
-sentences_typo_fixed.txt
-sentences_typo_fixed_uniq.txt
+sentences*.txt
+LCCC-base-split/LCCC*.txt
+LCCC-base-split/LCCC*.json
 *.tar.xz
 __pycache__
 .DS_Store

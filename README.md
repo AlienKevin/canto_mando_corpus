@@ -19,3 +19,4 @@ For the rest of the sentences, 40% are markedly Cantonese, while 47% are neutral
 | zh_tw_words.txt | https://github.com/APCLab/jieba-tw |
 | canto_mando_dict.txt | https://kaifangcidian.com/xiazai/cidian_zhyue-kfcd.zip |
 | zh_cn_and_tw_words.txt | https://github.com/samejack/sc-dictionary |
+| STCharacters.txt | https://github.com/BYVoid/OpenCC/blob/5750d92a92ac1f2d64c880c1f6f1a5e382d7d199/data/dictionary/STCharacters.txt |

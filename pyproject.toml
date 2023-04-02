@@ -10,6 +10,8 @@ packages = [{include = "lihkg_processor"}]
 python = "^3.11"
 pycantonese = "^3.4.0"
 cantoseg = "^0.0.1"
+starcc = "^0.0.5"
+jieba = "^0.42.1"
 
 
 [tool.poetry.group.dev.dependencies]
