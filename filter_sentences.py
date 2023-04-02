@@ -1,34 +1,8 @@
 import classifier
+from filter_characters import is_accepted_sentence
 
 import re
 
-# Filter characters
-simplified_chars = set()
-
-with open("STCharacters.txt", "r") as input_file:
-    for line in input_file.read().splitlines():
-        [simp, trad] = line.split("\t")
-        if not " " in trad:
-            simplified_chars.add(simp)
-
-with open("HKVariants.txt", "r") as input_file:
-    for line in input_file.read().splitlines():
-        [trad, hk_variants] = line.split("\t")
-        for variant in hk_variants.split(" "):
-            if variant in simplified_chars:
-                simplified_chars.remove(variant)
-
-
-punctuations = { '$', '%', '…', '—', '～',
-'~', '`', '!', '(', ')', '-', '_', '{', '}', '[', ']', '|', '\\', ':', ';', '"', '\'', '<', '>', ',', '.', '?', '/',
-'！', '：', '；', '“', '”', '‘', '’', '【', '】', '（', '）', '「', '」', '﹁', '﹂',
-'『', '』', '《', '》', '？', '，', '。', '、', '／', '＋', '〈', '〉', '︿', '﹀',
-'［', '］', '‧' }
-
-chinese_char_pattern = re.compile(r"[\u4e00-\u9fff]")
-alphanumeric_pattern = re.compile(r"[a-zA-Z0-9 ]")
-
-repeated_4_times_pattern = re.compile(r"(.)\1{3}")
 
 # Filter sensitive words
 lan_exceptions = ["撚下人",
@@ -58,22 +32,6 @@ def is_sensitive(sentence: str) -> bool:
 assert not is_sensitive("佢係個道德撚嚟嘅。")
 assert is_sensitive("個笨撚唔撚識讀嗰個字。")
 
-
-def is_accepted_sentence(sentence: str) -> bool:
-    sentence = sentence.strip()
-    # # Has to contain at least 5 Chinese characters
-    # if len("".join(chinese_char_pattern.findall(sentence))) < 5:
-    #     return False
-    if repeated_4_times_pattern.search(sentence.replace(" ", "")):
-        return False
-    for c in sentence:
-        is_accepted_char = (chinese_char_pattern.match(c) and not c in simplified_chars) or c in punctuations or alphanumeric_pattern.match(c)
-        if not is_accepted_char:
-            return False
-    return True
-
-assert (not is_accepted_sentence("你好 哈 哈 哈 哈"))
-assert (not is_accepted_sentence("！ ！ ！ ！"))
 
 with open("LCCC-base-split/LCCC_sentences_hk_8M.txt", "w+") as output_file:
     i = 0

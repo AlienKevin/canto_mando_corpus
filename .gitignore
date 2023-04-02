@@ -4,6 +4,8 @@ data/
 sentences*.txt
 LCCC-base-split/LCCC*.txt
 LCCC-base-split/LCCC*.json
+dgk_conv/
+douban/
 *.tar.xz
 __pycache__
 .DS_Store

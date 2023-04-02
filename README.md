@@ -13,9 +13,45 @@ For the rest of the sentences, 40% are markedly Cantonese, while 47% are neutral
 
 ![sentence lengths](sentence_lengths.png)
 
-# Sources
+# Dependencies
+* Python 3
+* Poetry (a Python package manager)
+* Rust
 
-You can download the LIHKG data from HuggingFace: https://huggingface.co/datasets/AlienKevin/LIHKG/tree/main
+# Build dependencies
+1. Install Python 3
+2. Install Poetry (See [official guide](https://python-poetry.org/docs/#installation))
+3. Install Rust (See [official guide](https://www.rust-lang.org/tools/install))
+4. Install all Python dependencies used by this project
+```
+poetry install
+```
+
+# Construct LIHKG Corpus
+1. You can download the LIHKG data from HuggingFace: https://huggingface.co/datasets/AlienKevin/LIHKG/tree/main
+2. Preprocess raw JSON data to filter out extremely short messages, auto-generated contents, and URLs
+```
+poetry run python preprocess.py
+```
+It should generate a folder called `preprocessed/`. There should be many CSV files in the folder.
+Each file contains one sentence on one line followed by a language tag (cantonese vs mandarin vs mixed vs neutral).
+For example:
+```
+真係妙想天開	cantonese
+```
+3. Filter out Mandarin sentences, restrict character set, and generate corpus statistics using Rust.
+Go to `src/main.rs` and uncomment the first line:
+```
+filter_processed().unwrap();
+```
+Then, run the script:
+```
+cargo run
+```
+You should see `sentences.txt` as the output.
+4. There are typos in the sentences, so we 
+
+# Sources
 
 |File| Source|
 | - | - |

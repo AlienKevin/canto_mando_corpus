@@ -28,14 +28,23 @@ alphanumeric_pattern = re.compile(r"[a-zA-Z0-9 ]")
 repeated_4_times_pattern = re.compile(r"(.)\1{3}")
 
 def is_accepted_sentence(sentence: str) -> bool:
-    sentence = sentence.strip()
+    sentence = sentence.strip().replace(" ", "")
     # # Has to contain at least 5 Chinese characters
     # if len("".join(chinese_char_pattern.findall(sentence))) < 5:
     #     return False
-    if repeated_4_times_pattern.match(sentence.replace(" ", "")):
+    if len(sentence) < 5:
+        return False
+    num_chinese_chars = 0
+    if repeated_4_times_pattern.search(sentence):
         return False
     for c in sentence:
-        is_accepted_char = (chinese_char_pattern.match(c) and not c in simplified_chars) or c in punctuations or alphanumeric_pattern.match(c)
+        is_chinese_char = chinese_char_pattern.match(c) and not c in simplified_chars
+        if is_chinese_char:
+            num_chinese_chars += 1
+        is_accepted_char = is_chinese_char or c in punctuations or alphanumeric_pattern.match(c)
         if not is_accepted_char:
             return False
-    return True
+    return (num_chinese_chars / len(sentence) >= 0.7)
+
+assert (not is_accepted_sentence("你好 哈 哈 哈 哈"))
+assert (not is_accepted_sentence("！ ！ ！ ！"))
